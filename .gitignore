@@ -1,0 +1,11 @@
+#Log
+logs
+*.logs
+
+youtube_clone_fe/node_modules/
+youtube_clone_be/node_modules/
+
+youtube_clone_fe/.env
+youtube_clone_be/.env
+
+.DS_Store
