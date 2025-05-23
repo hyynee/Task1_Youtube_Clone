@@ -12,7 +12,13 @@ export declare class SubscriptionController {
     }> & {
         __v: number;
     })[]>;
+    checkSubscriptionStatus(CurrentUser: any, userId: string): Promise<{
+        isSubscribed: boolean;
+    }>;
     follow(CurrentUser: any, userId: string): Promise<{
+        message: string;
+    }>;
+    unfollow(CurrentUser: any, userId: string): Promise<{
         message: string;
     }>;
 }
