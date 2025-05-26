@@ -17,7 +17,6 @@ const RelatedVideo = () => {
     useEffect(() => {
         getAllVideo();
     }, []);
-    console.log(videos);
     if (!videos) {
         return <div>Loading...</div>
     }

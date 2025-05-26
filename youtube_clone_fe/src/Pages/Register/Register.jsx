@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useRegisterHook } from './useRegisterHook';
 
 const Register = () => {
@@ -106,6 +107,13 @@ const Register = () => {
                     >
                         {loading ? 'Đang xử lý...' : 'Đăng ký'}
                     </button>
+                    {/* Redirect to Login */}
+                    <p className="text-sm text-center">
+                        Đã có tài khoản?{' '}
+                        <Link to="/login" className="text-blue-500 hover:underline">
+                            Đăng nhập
+                        </Link>
+                    </p>
                 </form>
             </div>
         </div>

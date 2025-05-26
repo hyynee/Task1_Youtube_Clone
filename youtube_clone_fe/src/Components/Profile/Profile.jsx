@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { http } from '../../util/config';
 
 const Profile = () => {
@@ -79,27 +79,29 @@ const Profile = () => {
             {/* Content Section */}
             <div className="content mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {video.map((video) => (
-                    <div
-                        key={video._id}
-                        className="video-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-                    >
-                        <div className="relative w-full h-40 bg-black">
-                            <video
-                                src={video.videoUrl || ""}
-                                controls
-                                muted
-                                className="absolute top-0 left-0 w-full h-full"
-                            ></video>
+                    <NavLink to={`/video/${video._id}`} key={video._id}>
+                        <div
+                            key={video._id}
+                            className="video-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+                        >
+                            <div className="relative w-full h-40 bg-black">
+                                <video
+                                    src={video.videoUrl || ""}
+                                    controls
+                                    muted
+                                    className="absolute top-0 left-0 w-full h-full"
+                                ></video>
+                            </div>
+                            <div className="p-4">
+                                <h3 className="text-sm font-semibold line-clamp-2">
+                                    {video.title || "Untitled Video"}
+                                </h3>
+                                <p className="text-xs text-gray-500 mt-2">
+                                    {video.views || 0} views • {new Date(video.createdAt).toLocaleDateString()}
+                                </p>
+                            </div>
                         </div>
-                        <div className="p-4">
-                            <h3 className="text-sm font-semibold line-clamp-2">
-                                {video.title || "Untitled Video"}
-                            </h3>
-                            <p className="text-xs text-gray-500 mt-2">
-                                {video.views || 0} views • {new Date(video.createdAt).toLocaleDateString()}
-                            </p>
-                        </div>
-                    </div>
+                    </NavLink>
                 ))}
             </div>
         </div>
