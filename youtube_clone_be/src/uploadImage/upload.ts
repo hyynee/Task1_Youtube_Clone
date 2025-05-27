@@ -17,7 +17,7 @@ const storage = multer.memoryStorage();
 const upload = multer({
   storage,
   limits: {
-    fileSize: 100 * 1024 * 1024, // 100MB limit for videos
+    fileSize: 5 * 1024 * 1024, // 5MB limit for images
   },
 });
 
@@ -34,13 +34,17 @@ export class UploadController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post('')
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(
+    FileInterceptor('image', { limits: { fileSize: 5 * 1024 * 1024 } }),
+  )
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     return this.handleUpload(file);
   }
 
   @Post('public')
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(
+    FileInterceptor('image', { limits: { fileSize: 5 * 1024 * 1024 } }),
+  )
   async uploadPublicFile(@UploadedFile() file: Express.Multer.File) {
     return this.handleUpload(file);
   }

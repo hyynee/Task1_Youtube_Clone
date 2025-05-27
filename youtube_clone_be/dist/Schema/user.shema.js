@@ -25,7 +25,7 @@ let User = class User extends mongoose_2.Document {
 };
 exports.User = User;
 __decorate([
-    (0, mongoose_1.Prop)({ required: true, unique: true, trim: true }),
+    (0, mongoose_1.Prop)({ required: true, trim: true }),
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], User.prototype, "name", void 0);

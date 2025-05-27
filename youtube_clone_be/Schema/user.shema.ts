@@ -5,7 +5,7 @@ import { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class User extends Document {
-  @Prop({ required: true, unique: true, trim: true })
+  @Prop({ required: true, trim: true })
   @ApiProperty()
   name: string;
 
