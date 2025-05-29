@@ -43,6 +43,7 @@ export const loginUser = createAsyncThunk(
             saveStorageJSON('token', data.token);
             return data;
         } catch (error) {
+            console.log("error", error)
             return rejectWithValue(
                 error.response?.data?.message ||
                 (error.response?.data?.statusCode === 400 ? 'Thông tin đăng nhập không chính xác' : 'Lỗi đăng nhập')
@@ -69,7 +70,6 @@ export const registerUser = createAsyncThunk(
                 name: userData.name,
                 avatar: avatarUrl || userData.avatar
             };
-
             console.log('Registration data:', { ...registerData, password: '***HIDDEN***' });
             const response = await httpNoAuth.post('/auth/register', registerData);
             const data = response.data;

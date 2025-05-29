@@ -58,11 +58,11 @@ let AuthService = class AuthService {
                 email,
             });
             if (!user) {
-                throw new common_1.HttpException({ statusCode: 400, message: 'Invalid credentials' }, common_1.HttpStatus.BAD_REQUEST);
+                throw new common_1.HttpException({ statusCode: 400, message: 'Wrong Email' }, common_1.HttpStatus.BAD_REQUEST);
             }
             const isMatch = await user.comparePassword(password);
             if (!isMatch) {
-                throw new common_1.HttpException({ statusCode: 400, message: 'Invalid credentials' }, common_1.HttpStatus.BAD_REQUEST);
+                throw new common_1.HttpException({ statusCode: 400, message: 'Wrong Password' }, common_1.HttpStatus.BAD_REQUEST);
             }
             const payload = { user: { id: user.id } };
             const token = this.jwtService.sign(payload);

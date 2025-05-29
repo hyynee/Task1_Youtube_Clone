@@ -56,6 +56,7 @@ const PlayVideo = () => {
                         autoPlay
                         muted
                         className="w-full h-full object-contain"
+                        lang="en"
                     ></video>
                 </div>
                 <h3 className="mt-4 text-lg font-semibold">
@@ -98,7 +99,7 @@ const PlayVideo = () => {
                                 : () => handleSubscribe(video?.data?.uploadedBy?._id)
                         }
                     >
-                        {isSubscribed ? 'Đã đăng ký' : 'Subscribe'}
+                        {isSubscribed ? 'Un Subscribe' : 'Subscribe'}
                     </button>
                 </div>
                 <hr className="my-4" />

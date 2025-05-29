@@ -60,6 +60,28 @@ const VideoUploadForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage('');
+        if (!formData.title.trim()) {
+            setMessage('Title is required.');
+            return;
+        }
+        if (!formData.description.trim()) {
+            setMessage('Description is required.');
+            return;
+        }
+        if (!formData.duration) {
+            setMessage('Duration is required.');
+            return;
+        }
+        // Validation for duration
+        const duration = parseInt(formData.duration, 10);
+        if (isNaN(duration) || duration <= 0) {
+            setMessage('Duration must be a positive number.');
+            return;
+        }
+        if (duration > 99999) {
+            setMessage('Duration exceeds the maximum allowed value.');
+            return;
+        }
         if (!formData.videoUrl) {
             setMessage('Please upload a video before saving.');
             return;

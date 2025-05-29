@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
+import profile_icon from '../../assets/jack.png';
 import { http } from '../../util/config';
-
 const Profile = () => {
     const navigate = useNavigate();
     const { user, loading, error } = useSelector((state) => state.auth);
@@ -48,7 +48,7 @@ const Profile = () => {
             {/* Header Section */}
             <div className="profile-header bg-white rounded-lg shadow-md p-6 flex flex-col md:flex-row items-center gap-6">
                 <img
-                    src={user?.avatar || ""}
+                    src={user?.avatar || profile_icon}
                     alt="Avatar"
                     className="w-24 h-24 rounded-full object-cover"
                 />

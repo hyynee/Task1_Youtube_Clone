@@ -9,20 +9,34 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [validationError, setValidationError] = useState('');
     const { user, loading, error } = useSelector((state) => state.auth);
+
+    const handleInputChange = (setter) => (e) => {
+        setter(e.target.value);
+        setValidationError('');
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!email || !password) {
+        if (!email) {
+            setValidationError('Please enter your email.');
+            return;
+        }
+        if (!password) {
+            setValidationError('Please enter your password.');
             return;
         }
         dispatch(loginUser({ email, password }));
     };
+
     useEffect(() => {
         if (user) {
             navigate('/');
         }
+        setValidationError('');
     }, [user, navigate]);
+
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-50">
             <div className="w-full max-w-md px-4">
@@ -42,7 +56,7 @@ const Login = () => {
                         <input
                             type="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={handleInputChange(setEmail)}
                             className="w-full p-2 border rounded"
                             placeholder="Enter your email address"
                         />
@@ -53,11 +67,14 @@ const Login = () => {
                         <input
                             type="password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={handleInputChange(setPassword)}
                             className="w-full p-2 border rounded"
                             placeholder="Enter your password"
                         />
                     </div>
+                    {/* Display validation error */}
+                    {validationError && <p className="text-red-500 text-center text-sm mt-4">{validationError}</p>}
+
                     <button
                         type="submit"
                         className="w-full bg-black text-white p-2 rounded-lg font-semibold hover:bg-gray-800 transition"

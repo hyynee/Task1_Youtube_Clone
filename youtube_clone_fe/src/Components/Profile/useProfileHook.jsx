@@ -29,6 +29,12 @@ export const useProfileHook = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const specialCharRegex = /[^a-zA-Z0-9\s]/;
+        if (specialCharRegex.test(formData.name)) {
+            alert('Tên không được chứa ký tự đặc biệt.');
+            setLoading(false);
+            return;
+        }
         setLoading(true);
         try {
             let avatarUrl = user?.avatar;

@@ -59,14 +59,14 @@ export class AuthService {
       });
       if (!user) {
         throw new HttpException(
-          { statusCode: 400, message: 'Invalid credentials' },
+          { statusCode: 400, message: 'Wrong Email' },
           HttpStatus.BAD_REQUEST,
         );
       }
       const isMatch = await user.comparePassword(password);
       if (!isMatch) {
         throw new HttpException(
-          { statusCode: 400, message: 'Invalid credentials' },
+          { statusCode: 400, message: 'Wrong Password' },
           HttpStatus.BAD_REQUEST,
         );
       }
