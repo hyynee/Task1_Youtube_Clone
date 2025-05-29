@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import automobiles from '../../assets/automobiles.png';
 import blogs from '../../assets/blogs.png';
 import entertainment from '../../assets/entertainment.png';
@@ -59,8 +60,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 {/* Shortcut Links */}
                 <div className="shortcut-links flex flex-col space-y-4">
                     <div className="side-link flex items-center space-x-4 hover:bg-gray-100 p-2 rounded-lg cursor-pointer">
-                        <img src={home} alt="Home" className="w-6 h-6" />
-                        <p className={`${isOpen ? 'block' : 'hidden'} lg:block text-sm font-medium text-gray-700`}>Home</p>
+                        <NavLink to="/" className="flex items-center space-x-4">
+                            <img src={home} alt="Home" className="w-6 h-6" />
+                            <p className={`${isOpen ? 'block' : 'hidden'} lg:block text-sm font-medium text-gray-700`}>Home</p>
+                        </NavLink>
                     </div>
                     <div className="side-link flex items-center space-x-4 hover:bg-gray-100 p-2 rounded-lg cursor-pointer">
                         <img src={game_icon} alt="Gaming" className="w-6 h-6" />

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import profile_icon from '../../assets/jack.png';
 import logo from '../../assets/logo.png';
 import menu_icon from '../../assets/menu.png';
 import more_icon from '../../assets/more.png';
@@ -75,12 +74,20 @@ const Navbar = ({ toggleSidebar }) => {
                     className="w-6 h-6 cursor-pointer hover:opacity-80"
                 />
                 <div className="relative group">
-                    <img
-                        src={user ? user.avatar : profile_icon}
-                        alt="Profile"
-                        className="w-8 h-8 rounded-full cursor-pointer hover:opacity-80"
-                        onClick={() => !user && navigate('/login')}
-                    />
+                    {user ? (
+                        <img
+                            src={user.avatar}
+                            alt="Profile"
+                            className="w-8 h-8 rounded-full cursor-pointer hover:opacity-80"
+                        />
+                    ) : (
+                        <button
+                            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                            onClick={() => navigate('/login')}
+                        >
+                            Đăng nhập
+                        </button>
+                    )}
                     {user && (
                         <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                             <button

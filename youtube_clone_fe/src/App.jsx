@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
+import Layout from './Components/Layout/Layout';
 import EditProfile from './Components/Profile/EditProfile';
 import Profile from './Components/Profile/Profile';
 import VideoUploadForm from './Components/VideoUpload/VideoUploadForm';
@@ -14,13 +15,16 @@ const App = () => {
   return (
     <Provider store={store}>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/video/:videoId" element={<Video />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/upload" element={<VideoUploadForm />} />
-        <Route path="/edit-profile" element={<EditProfile />} />
+
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/video/:videoId" element={<Video />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/upload" element={<VideoUploadForm />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+        </Route>
       </Routes>
     </Provider>
   )
