@@ -19,6 +19,20 @@ export const useProfileHook = () => {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            // Check file type
+            if (!file.type.startsWith('image/')) {
+                alert('Định dạng file không hợp lệ.');
+                e.target.value = '';
+                return;
+            }
+
+            // Check file size (5MB = 5 * 1024 * 1024 bytes)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Kích thước file quá lớn.');
+                e.target.value = '';
+                return;
+            }
+
             setFormData((prev) => ({
                 ...prev,
                 avatar: file,

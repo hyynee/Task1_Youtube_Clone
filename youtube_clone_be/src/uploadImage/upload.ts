@@ -35,7 +35,22 @@ export class UploadController {
   @UseGuards(AuthGuard('jwt'))
   @Post('')
   @UseInterceptors(
-    FileInterceptor('image', { limits: { fileSize: 5 * 1024 * 1024 } }),
+    FileInterceptor('image', {
+      limits: { fileSize: 5 * 1024 * 1024 },
+      fileFilter: (req, file, callback) => {
+        // Check if file is an image
+        if (!file.mimetype.startsWith('image/')) {
+          return callback(
+            new HttpException(
+              'Định dạng file không hợp lệ.',
+              HttpStatus.BAD_REQUEST,
+            ),
+            false,
+          );
+        }
+        callback(null, true);
+      },
+    }),
   )
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     return this.handleUpload(file);
@@ -43,7 +58,22 @@ export class UploadController {
 
   @Post('public')
   @UseInterceptors(
-    FileInterceptor('image', { limits: { fileSize: 5 * 1024 * 1024 } }),
+    FileInterceptor('image', {
+      limits: { fileSize: 5 * 1024 * 1024 },
+      fileFilter: (req, file, callback) => {
+        // Check if file is an image
+        if (!file.mimetype.startsWith('image/')) {
+          return callback(
+            new HttpException(
+              'Định dạng file không hợp lệ.',
+              HttpStatus.BAD_REQUEST,
+            ),
+            false,
+          );
+        }
+        callback(null, true);
+      },
+    }),
   )
   async uploadPublicFile(@UploadedFile() file: Express.Multer.File) {
     return this.handleUpload(file);
