@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
-import Navbar from './Components/Navbar/Navbar';
+import Layout from './Components/Layout/Layout';
 import EditProfile from './Components/Profile/EditProfile';
 import Profile from './Components/Profile/Profile';
 import VideoUploadForm from './Components/VideoUpload/VideoUploadForm';
@@ -14,18 +14,18 @@ import store from './redux/store';
 const App = () => {
   return (
     <Provider store={store}>
-      <div>
-        <Navbar />
-        <Routes>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/video/:videoId" element={<Video />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/upload" element={<VideoUploadForm />} />
           <Route path="/edit-profile" element={<EditProfile />} />
-        </Routes>
-      </div>
+        </Route>
+      </Routes>
     </Provider>
   )
 }

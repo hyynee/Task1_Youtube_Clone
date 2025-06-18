@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from 'src/auth/decorator/currentUser.decorator';
+import { CurrentUser } from '../auth/decorator/currentUser.decorator';
 import { SubscriptionService } from './subscription.service';
 
 @ApiTags('Subscription')
@@ -31,11 +31,29 @@ export class SubscriptionController {
     const currentUserId = CurrentUser.user.id;
     return this.subscriptionService.getAllSubscribers(currentUserId);
   }
-
+  @Get('/status/:userId')
+  @HttpCode(200)
+  checkSubscriptionStatus(
+    @CurrentUser() CurrentUser,
+    @Param('userId') userId: string,
+  ) {
+    const currentUserId = CurrentUser.user.id;
+    return this.subscriptionService.checkSubscriptionStatus(
+      currentUserId,
+      userId,
+    );
+  }
   @Post(':userId')
   @HttpCode(200)
   follow(@CurrentUser() CurrentUser, @Param('userId') userId: string) {
     const currentUserId = CurrentUser.user.id;
     return this.subscriptionService.follow(currentUserId, userId);
+  }
+
+  @Post('/unfollow/:userId')
+  @HttpCode(200)
+  unfollow(@CurrentUser() CurrentUser, @Param('userId') userId: string) {
+    const currentUserId = CurrentUser.user.id;
+    return this.subscriptionService.unfollow(currentUserId, userId);
   }
 }

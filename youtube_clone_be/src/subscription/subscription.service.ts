@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Subscription } from 'Schema/subscription.shema';
-import { User } from 'Schema/user.shema';
+import { Subscription } from '../Schema/subscription.shema';
+import { User } from '../Schema/user.shema';
 
 @Injectable()
 export class SubscriptionService {
@@ -25,7 +25,21 @@ export class SubscriptionService {
       .populate('subscriber', 'name avatar');
     return subscribers;
   }
+  async checkSubscriptionStatus(currentUserId: string, userId: string) {
+    if (currentUserId === userId) {
+      throw new HttpException(
+        'Không thể kiểm tra trạng thái với chính mình',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
+    const subscription = await this.subscriptionModel.findOne({
+      subscriber: currentUserId,
+      subscribedTo: userId,
+    });
+
+    return { isSubscribed: !!subscription };
+  }
   async follow(currentUserId: string, userId: string) {
     // console.log('currentUserId', currentUserId);
     // console.log('userId', userId);
@@ -56,5 +70,19 @@ export class SubscriptionService {
     });
     await newSubscription.save();
     return { message: 'Đăng ký theo dõi thành công!' };
+  }
+
+  async unfollow(currentUserId: string, userId: string) {
+    const subscription = await this.subscriptionModel.findOneAndDelete({
+      subscriber: currentUserId,
+      subscribedTo: userId,
+    });
+    if (!subscription) {
+      throw new HttpException(
+        'Không tìm thấy đăng ký theo dõi',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return { message: 'Hủy theo dõi thành công!' };
   }
 }

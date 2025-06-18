@@ -19,6 +19,20 @@ export const useProfileHook = () => {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            // Check file type
+            if (!file.type.startsWith('image/')) {
+                alert('Định dạng file không hợp lệ.');
+                e.target.value = '';
+                return;
+            }
+
+            // Check file size (5MB = 5 * 1024 * 1024 bytes)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Kích thước file quá lớn.');
+                e.target.value = '';
+                return;
+            }
+
             setFormData((prev) => ({
                 ...prev,
                 avatar: file,
@@ -29,6 +43,12 @@ export const useProfileHook = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const specialCharRegex = /[^a-zA-Z0-9\s]/;
+        if (specialCharRegex.test(formData.name)) {
+            alert('Tên không được chứa ký tự đặc biệt.');
+            setLoading(false);
+            return;
+        }
         setLoading(true);
         try {
             let avatarUrl = user?.avatar;

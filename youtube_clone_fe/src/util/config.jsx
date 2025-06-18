@@ -33,24 +33,24 @@ http.interceptors.response.use(
     }
 );
 
-// Cấu hình localStorage
+// Cấu hình sessionStorage
 export const { saveStorageJSON, getStorageJSON, clearStorageJSON } = {
     saveStorageJSON: (name, data) => {
-        localStorage.setItem(name, JSON.stringify(data));
+        sessionStorage.setItem(name, JSON.stringify(data));
     },
     getStorageJSON: (name) => {
-        const sData = localStorage.getItem(name);
+        const sData = sessionStorage.getItem(name);
         if (sData) {
             try {
                 return JSON.parse(sData);
             } catch (e) {
-                console.error(`Error parsing JSON from localStorage key "${name}":`, e);
+                console.error(`Error parsing JSON from sessionStorage key "${name}":`, e);
                 return null;
             }
         }
         return null;
     },
     clearStorageJSON: (name) => {
-        localStorage.removeItem(name);
+        sessionStorage.removeItem(name);
     },
 };

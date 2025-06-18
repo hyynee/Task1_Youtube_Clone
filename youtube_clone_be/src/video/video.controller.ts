@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { CurrentUser } from 'src/auth/decorator/currentUser.decorator';
+import { CurrentUser } from '../auth/decorator/currentUser.decorator';
 import { CreateVideoDTO } from './dto/create-video.dto';
 import { VideoService } from './video.service';
 

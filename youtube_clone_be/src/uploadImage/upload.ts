@@ -11,13 +11,13 @@ import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { v2 as cloudinary } from 'cloudinary';
-import * as multer from 'multer';
+import multer from 'multer';
 
 const storage = multer.memoryStorage();
 const upload = multer({
   storage,
   limits: {
-    fileSize: 100 * 1024 * 1024, // 100MB limit for videos
+    fileSize: 5 * 1024 * 1024, // 5MB limit for images
   },
 });
 
@@ -34,13 +34,47 @@ export class UploadController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post('')
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(
+    FileInterceptor('image', {
+      limits: { fileSize: 5 * 1024 * 1024 },
+      fileFilter: (req, file, callback) => {
+        // Check if file is an image
+        if (!file.mimetype.startsWith('image/')) {
+          return callback(
+            new HttpException(
+              'Định dạng file không hợp lệ.',
+              HttpStatus.BAD_REQUEST,
+            ),
+            false,
+          );
+        }
+        callback(null, true);
+      },
+    }),
+  )
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     return this.handleUpload(file);
   }
 
   @Post('public')
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(
+    FileInterceptor('image', {
+      limits: { fileSize: 5 * 1024 * 1024 },
+      fileFilter: (req, file, callback) => {
+        // Check if file is an image
+        if (!file.mimetype.startsWith('image/')) {
+          return callback(
+            new HttpException(
+              'Định dạng file không hợp lệ.',
+              HttpStatus.BAD_REQUEST,
+            ),
+            false,
+          );
+        }
+        callback(null, true);
+      },
+    }),
+  )
   async uploadPublicFile(@UploadedFile() file: Express.Multer.File) {
     return this.handleUpload(file);
   }

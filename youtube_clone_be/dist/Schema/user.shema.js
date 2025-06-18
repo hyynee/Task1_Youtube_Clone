@@ -25,7 +25,7 @@ let User = class User extends mongoose_2.Document {
 };
 exports.User = User;
 __decorate([
-    (0, mongoose_1.Prop)({ required: true, unique: true, trim: true }),
+    (0, mongoose_1.Prop)({ required: true, trim: true }),
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], User.prototype, "name", void 0);
@@ -34,7 +34,7 @@ __decorate([
         required: true,
         unique: true,
         trim: true,
-        match: [/.+\@.+\..+/, 'Email không hợp lệ']
+        match: [/.+\@.+\..+/, 'Email không hợp lệ'],
     }),
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
@@ -44,9 +44,9 @@ __decorate([
         required: true,
         minlength: [6, 'Mật khẩu phải có ít nhất 6 ký tự'],
         validate: {
-            validator: (value) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(value),
-            message: 'Mật khẩu phải có ít nhất 1 chữ cái và 1 số',
-        }
+            validator: (value) => /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(value),
+            message: 'Mật khẩu phải có ít nhất 1 chữ cái, 1 số và 1 ký tự đặc biệt',
+        },
     }),
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)

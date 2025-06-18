@@ -37,6 +37,16 @@ let SubscriptionService = class SubscriptionService {
             .populate('subscriber', 'name avatar');
         return subscribers;
     }
+    async checkSubscriptionStatus(currentUserId, userId) {
+        if (currentUserId === userId) {
+            throw new common_1.HttpException('Không thể kiểm tra trạng thái với chính mình', common_1.HttpStatus.BAD_REQUEST);
+        }
+        const subscription = await this.subscriptionModel.findOne({
+            subscriber: currentUserId,
+            subscribedTo: userId,
+        });
+        return { isSubscribed: !!subscription };
+    }
     async follow(currentUserId, userId) {
         if (currentUserId === userId) {
             throw new common_1.HttpException('Không thể tự theo dõi chính mình', common_1.HttpStatus.BAD_REQUEST);
@@ -58,6 +68,16 @@ let SubscriptionService = class SubscriptionService {
         });
         await newSubscription.save();
         return { message: 'Đăng ký theo dõi thành công!' };
+    }
+    async unfollow(currentUserId, userId) {
+        const subscription = await this.subscriptionModel.findOneAndDelete({
+            subscriber: currentUserId,
+            subscribedTo: userId,
+        });
+        if (!subscription) {
+            throw new common_1.HttpException('Không tìm thấy đăng ký theo dõi', common_1.HttpStatus.NOT_FOUND);
+        }
+        return { message: 'Hủy theo dõi thành công!' };
     }
 };
 exports.SubscriptionService = SubscriptionService;

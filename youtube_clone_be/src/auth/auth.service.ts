@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Request } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from 'Schema/user.shema';
+import { User } from '../Schema/user.shema';
 import { LoginDTO } from './dto/login.dto';
 import { SignUpDTO } from './dto/signup.dto';
 import { UpdateUserDTO } from './dto/update-user.dto';
@@ -59,14 +59,14 @@ export class AuthService {
       });
       if (!user) {
         throw new HttpException(
-          { statusCode: 400, message: 'Invalid credentials' },
+          { statusCode: 400, message: 'Wrong Email' },
           HttpStatus.BAD_REQUEST,
         );
       }
       const isMatch = await user.comparePassword(password);
       if (!isMatch) {
         throw new HttpException(
-          { statusCode: 400, message: 'Invalid credentials' },
+          { statusCode: 400, message: 'Wrong Password' },
           HttpStatus.BAD_REQUEST,
         );
       }

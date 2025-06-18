@@ -39,10 +39,12 @@ export const loginUser = createAsyncThunk(
         try {
             const response = await http.post('/auth/login', userData);
             const data = response.data;
+            // Lưu thông tin user và token vào sessionStorage
             saveStorageJSON('userInfo', data);
             saveStorageJSON('token', data.token);
             return data;
         } catch (error) {
+            console.log("error", error)
             return rejectWithValue(
                 error.response?.data?.message ||
                 (error.response?.data?.statusCode === 400 ? 'Thông tin đăng nhập không chính xác' : 'Lỗi đăng nhập')
@@ -69,7 +71,6 @@ export const registerUser = createAsyncThunk(
                 name: userData.name,
                 avatar: avatarUrl || userData.avatar
             };
-
             console.log('Registration data:', { ...registerData, password: '***HIDDEN***' });
             const response = await httpNoAuth.post('/auth/register', registerData);
             const data = response.data;
@@ -98,7 +99,7 @@ export const fetchCurrentUser = createAsyncThunk(
             }
             http.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             const response = await http.get('/auth/currentUser');
-            return response.data; // user object
+            return response.data;
         } catch (error) {
             console.error('Fetch current user error:', error);
             if (error.response?.status === 401) {
@@ -134,9 +135,8 @@ const authSlice = createSlice({
         logout: (state) => {
             state.user = null;
             state.token = null;
-            localStorage.removeItem('userInfo');
-            localStorage.removeItem('token');
-
+            sessionStorage.removeItem('userInfo');
+            sessionStorage.removeItem('token');
         },
         clearError: (state) => {
             state.error = null;
@@ -182,16 +182,15 @@ const authSlice = createSlice({
             })
             .addCase(fetchCurrentUser.fulfilled, (state, action) => {
                 state.loading = false;
-                state.user = action.payload; // Update user data
+                state.user = action.payload;
             })
             .addCase(fetchCurrentUser.rejected, (state, action) => {
                 state.loading = false;
                 if (action.payload === 'Không có token' || action.error.message.includes('401')) {
-                    // Auto logout if token is invalid or expired
                     state.user = null;
                     state.token = null;
-                    localStorage.removeItem('userInfo');
-                    localStorage.removeItem('token');
+                    sessionStorage.removeItem('userInfo');
+                    sessionStorage.removeItem('token');
                 }
             })
             // updateUser
@@ -203,10 +202,6 @@ const authSlice = createSlice({
                 state.loading = false;
                 state.user = action.payload;
                 state.error = null;
-                // saveStorageJSON('userInfo', {
-                //     user: action.payload,
-                //     token: state.token,
-                // });
             })
             .addCase(updateUser.rejected, (state, action) => {
                 state.loading = false;

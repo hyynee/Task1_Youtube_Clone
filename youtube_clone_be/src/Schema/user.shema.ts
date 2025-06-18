@@ -5,7 +5,7 @@ import { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class User extends Document {
-  @Prop({ required: true, unique: true, trim: true })
+  @Prop({ required: true, trim: true })
   @ApiProperty()
   name: string;
 
@@ -13,7 +13,7 @@ export class User extends Document {
     required: true,
     unique: true,
     trim: true,
-    match: [/.+\@.+\..+/, 'Email không hợp lệ']
+    match: [/.+\@.+\..+/, 'Email không hợp lệ'],
   })
   @ApiProperty()
   email: string;
@@ -22,9 +22,12 @@ export class User extends Document {
     required: true,
     minlength: [6, 'Mật khẩu phải có ít nhất 6 ký tự'],
     validate: {
-      validator: (value: string) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(value),
-      message: 'Mật khẩu phải có ít nhất 1 chữ cái và 1 số',
-    }
+      validator: (value: string) =>
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(
+          value,
+        ),
+      message: 'Mật khẩu phải có ít nhất 1 chữ cái, 1 số và 1 ký tự đặc biệt',
+    },
   })
   @ApiProperty()
   password: string;
@@ -51,6 +54,8 @@ UserSchema.pre<User>('save', async function (next) {
   next();
 });
 
-UserSchema.methods.comparePassword = async function (password: string): Promise<boolean> {
+UserSchema.methods.comparePassword = async function (
+  password: string,
+): Promise<boolean> {
   return bcrypt.compare(password, this.password);
 };

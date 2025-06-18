@@ -31,9 +31,17 @@ let SubscriptionController = class SubscriptionController {
         const currentUserId = CurrentUser.user.id;
         return this.subscriptionService.getAllSubscribers(currentUserId);
     }
+    checkSubscriptionStatus(CurrentUser, userId) {
+        const currentUserId = CurrentUser.user.id;
+        return this.subscriptionService.checkSubscriptionStatus(currentUserId, userId);
+    }
     follow(CurrentUser, userId) {
         const currentUserId = CurrentUser.user.id;
         return this.subscriptionService.follow(currentUserId, userId);
+    }
+    unfollow(CurrentUser, userId) {
+        const currentUserId = CurrentUser.user.id;
+        return this.subscriptionService.unfollow(currentUserId, userId);
     }
 };
 exports.SubscriptionController = SubscriptionController;
@@ -54,6 +62,15 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], SubscriptionController.prototype, "getAllSubscribers", null);
 __decorate([
+    (0, common_1.Get)('/status/:userId'),
+    (0, common_1.HttpCode)(200),
+    __param(0, (0, currentUser_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Param)('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], SubscriptionController.prototype, "checkSubscriptionStatus", null);
+__decorate([
     (0, common_1.Post)(':userId'),
     (0, common_1.HttpCode)(200),
     __param(0, (0, currentUser_decorator_1.CurrentUser)()),
@@ -62,6 +79,15 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", void 0)
 ], SubscriptionController.prototype, "follow", null);
+__decorate([
+    (0, common_1.Post)('/unfollow/:userId'),
+    (0, common_1.HttpCode)(200),
+    __param(0, (0, currentUser_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Param)('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], SubscriptionController.prototype, "unfollow", null);
 exports.SubscriptionController = SubscriptionController = __decorate([
     (0, swagger_1.ApiTags)('Subscription'),
     (0, common_1.Controller)('subscription'),

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useRegisterHook } from './useRegisterHook';
 
 const Register = () => {
@@ -16,7 +17,7 @@ const Register = () => {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
             <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-md">
-                <h2 className="text-2xl font-bold text-center mb-6">Đăng ký tài khoản</h2>
+                <h2 className="text-2xl font-bold text-center mb-6">Register Account</h2>
                 {error && <div className="text-red-500 text-center mb-4">{error}</div>}
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Email */}
@@ -28,56 +29,56 @@ const Register = () => {
                             value={formData.email}
                             onChange={handleInputChange}
                             className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Nhập email của bạn"
+                            placeholder="Enter your email"
                             required
                         />
                         {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                     </div>
                     {/* Name */}
                     <div>
-                        <label className="block text-sm font-medium mb-1">Họ và tên</label>
+                        <label className="block text-sm font-medium mb-1">Full Name</label>
                         <input
                             type="text"
                             name="name"
                             value={formData.name}
                             onChange={handleInputChange}
                             className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Nhập họ và tên"
+                            placeholder="Enter your full name"
                             required
                         />
                         {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                     </div>
                     {/* Password */}
                     <div>
-                        <label className="block text-sm font-medium mb-1">Mật khẩu</label>
+                        <label className="block text-sm font-medium mb-1">Password</label>
                         <input
                             type="password"
                             name="password"
                             value={formData.password}
                             onChange={handleInputChange}
                             className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Nhập mật khẩu"
+                            placeholder="Enter your password"
                             required
                         />
                         {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                     </div>
                     {/* Confirm Password */}
                     <div>
-                        <label className="block text-sm font-medium mb-1">Xác nhận mật khẩu</label>
+                        <label className="block text-sm font-medium mb-1">Confirm Password</label>
                         <input
                             type="password"
                             name="confirmPassword"
                             value={formData.confirmPassword}
                             onChange={handleInputChange}
                             className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Nhập lại mật khẩu"
+                            placeholder="Re-enter your password"
                             required
                         />
                         {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
                     </div>
                     {/* Avatar */}
                     <div>
-                        <label className="block text-sm font-medium mb-1">Avatar (không bắt buộc)</label>
+                        <label className="block text-sm font-medium mb-1">Avatar (optional)</label>
                         <input
                             type="file"
                             name="avatar"
@@ -85,10 +86,10 @@ const Register = () => {
                             onChange={handleFileChange}
                             className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
-                        {/* Hiển thị preview ảnh */}
+                        {/* Display avatar preview */}
                         {avatarPreview && (
                             <div className="mt-4">
-                                <p className="text-sm font-medium mb-2">Xem trước avatar:</p>
+                                <p className="text-sm font-medium mb-2">Avatar Preview:</p>
                                 <img
                                     src={avatarPreview}
                                     alt="Avatar Preview"
@@ -104,8 +105,15 @@ const Register = () => {
                         className={`w-full p-2 rounded-lg font-semibold text-white ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'}`}
                         disabled={loading}
                     >
-                        {loading ? 'Đang xử lý...' : 'Đăng ký'}
+                        {loading ? 'Processing...' : 'Register'}
                     </button>
+                    {/* Redirect to Login */}
+                    <p className="text-sm text-center">
+                        Already have an account?{' '}
+                        <Link to="/login" className="text-blue-500 hover:underline">
+                            Login
+                        </Link>
+                    </p>
                 </form>
             </div>
         </div>

@@ -41,11 +41,27 @@ export const useRegisterHook = () => {
     };
     const validateForm = () => {
         const newErrors = {};
-        if (!formData.email) newErrors.email = 'Email là bắt buộc';
-        if (!formData.name) newErrors.name = 'Tên là bắt buộc';
-        if (formData.password.length < 6) newErrors.password = 'Mật khẩu phải có ít nhất 6 ký tự';
-        if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Mật khẩu không khớp';
-
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const nameRegex = /^[a-zA-Z\s]+$/;
+        const maxNameLength = 50;
+        if (!formData.email) {
+            newErrors.email = 'Email is required';
+        } else if (!emailRegex.test(formData.email)) {
+            newErrors.email = 'Invalid email format';
+        }
+        if (!formData.name) {
+            newErrors.name = 'Name is required';
+        } else if (formData.name.length > maxNameLength) {
+            newErrors.name = `Name must not exceed ${maxNameLength} characters`;
+        } else if (!nameRegex.test(formData.name)) {
+            newErrors.name = 'Name contains invalid characters';
+        }
+        if (formData.password.length < 6) {
+            newErrors.password = 'Password must be at least 6 characters';
+        }
+        if (formData.password !== formData.confirmPassword) {
+            newErrors.confirmPassword = 'Passwords do not match';
+        }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };

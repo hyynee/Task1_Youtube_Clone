@@ -23,7 +23,7 @@ const storage = multer.memoryStorage();
 const upload = multer({
     storage,
     limits: {
-        fileSize: 100 * 1024 * 1024,
+        fileSize: 5 * 1024 * 1024,
     },
 });
 let UploadController = class UploadController {
@@ -121,7 +121,15 @@ exports.UploadController = UploadController;
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Post)(''),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image')),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image', {
+        limits: { fileSize: 5 * 1024 * 1024 },
+        fileFilter: (req, file, callback) => {
+            if (!file.mimetype.startsWith('image/')) {
+                return callback(new common_1.HttpException('Định dạng file không hợp lệ.', common_1.HttpStatus.BAD_REQUEST), false);
+            }
+            callback(null, true);
+        },
+    })),
     __param(0, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -129,7 +137,15 @@ __decorate([
 ], UploadController.prototype, "uploadFile", null);
 __decorate([
     (0, common_1.Post)('public'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image')),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image', {
+        limits: { fileSize: 5 * 1024 * 1024 },
+        fileFilter: (req, file, callback) => {
+            if (!file.mimetype.startsWith('image/')) {
+                return callback(new common_1.HttpException('Định dạng file không hợp lệ.', common_1.HttpStatus.BAD_REQUEST), false);
+            }
+            callback(null, true);
+        },
+    })),
     __param(0, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
